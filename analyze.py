@@ -1,5 +1,4 @@
-from utils.plotting import col_types
-
+from excel import col_types    # ← correct location of col_types
 
 def compare_with_manual(df):
     same = 0

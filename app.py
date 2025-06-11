@@ -3,7 +3,8 @@
 A one‑file Streamlit app that lets colleagues run the OTROK persona‑scoring
 pipeline in the browser:
 
-1. Upload a CSV of people (id, name, original_segment …).
+1. Upload a CSV of people (id, name, original_segment …). Works with either
+   comma‑ or semicolon‑separated files (auto‑detect).
 2. Optionally upload a custom system_prompt.txt (or fall back to a simple default).
 3. Choose the LLM model + temperature and paste API keys in the sidebar (or let
    them auto‑fill from Streamlit **secrets**).
@@ -20,6 +21,8 @@ Run locally:
 
 from __future__ import annotations
 
+import csv
+import io
 import json
 import os
 import tempfile
@@ -50,6 +53,24 @@ def _persona_cols() -> list[str]:
     return [c for cols in excel.col_types.values() for c in sorted(cols)]
 
 
+def _read_csv_any_delim(uploaded_file) -> pd.DataFrame:
+    """Read a CSV whose delimiter might be ',', ';', '\t', or '|'."""
+    raw = uploaded_file.getvalue()
+    # sniff first 4 KB to guess delimiter
+    sample = raw[:4096].decode("utf-8", errors="ignore")
+    try:
+        dialect = csv.Sniffer().sniff(sample, delimiters=[",", ";", "\t", "|"])
+        sep = dialect.delimiter
+    except csv.Error:
+        sep = ","  # fallback
+    # rewind BytesIO for pandas
+    buf = io.BytesIO(raw)
+    df = pd.read_csv(buf, sep=sep)
+    # normalise column names (strip whitespace / line breaks)
+    df.columns = [c.replace("\n", " ").strip() for c in df.columns]
+    return df
+
+
 def _enrich_dataframe(df: pd.DataFrame, system_prompt: str, model: str, temp: float) -> pd.DataFrame:
     """Call the OTROK LLM pipeline row‑by‑row and return the scored DataFrame."""
     llm = LLM(model=model, system_prompt=system_prompt, log_level=3)
@@ -69,9 +90,9 @@ def _enrich_dataframe(df: pd.DataFrame, system_prompt: str, model: str, temp: fl
             data.setdefault(p, None)
 
         data.update({
-            "id": row.get("id"),
-            "name": row.get("name"),
-            "original_segment": row.get("original_segment"),
+            "id": row.get("id") or row.get("Id") or row.get("ID"),
+            "name": row.get("name") or row.get("Name"),
+            "original_segment": row.get("original_segment") or row.get("Original segment") or row.get("Original Segment"),
         })
         results.append(data)
         progress.progress(i / len(df), text=f"{i}/{len(df)} rows done")
@@ -128,11 +149,8 @@ def main():
         st.info("⬆️ Upload a CSV to get started.")
         return
 
-    df_input = pd.read_csv(uploaded,  sep=";")
-    df_input.columns = [
-    c.replace("\n", "_").strip() for c in df_input.columns
-]
-    st.subheader("Preview of uploaded data")
+    df_input = _read_csv_any_delim(uploaded)
+    st.subheader("Preview of uploaded data (first 5 rows)")
     st.dataframe(df_input.head())
 
     if st.button("Run OTROK"):

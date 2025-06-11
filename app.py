@@ -128,7 +128,10 @@ def main():
         st.info("⬆️ Upload a CSV to get started.")
         return
 
-    df_input = pd.read_csv(uploaded)
+    df_input = pd.read_csv(uploaded,  sep=";")
+    df_input.columns = [
+    c.replace("\n", "_").strip() for c in df_input.columns
+]
     st.subheader("Preview of uploaded data")
     st.dataframe(df_input.head())
 

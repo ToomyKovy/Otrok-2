@@ -686,10 +686,17 @@ For all the outlined persona_types consider similarities in job titles, its diff
 - Lead
 
 
-The user will give you scraped information about a single person based on social media in a json format. Your task is to give a qualified classification in the json format including all mentioned persone_types without any comment:
+The user will give you scraped information about a single person based on social media in a json format. Your task is to give a qualified classification only in the json format including all mentioned persone_types without any comment:
 
 [{
   "persona_type": "PFM",
   "short_reasoning": "1-2 sentences explaining this decision.",
   "score": 0-5 | none  # scale 0 - this person for sure does not match this persona_type, 5 - perfect match. If unsure or the data does not give necessary information, leave this with none.
 }, ...]
+
+Return **only** one JSON object like:
+{
+  "Business Decisions": 3,
+  "Data Quality": 0,
+  …
+}

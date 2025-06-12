@@ -84,7 +84,11 @@ def _enrich_dataframe(df: pd.DataFrame, system_prompt: str, model: str, temp: fl
         input_prompt = json.dumps(row, ensure_ascii=False)
         completion = llm.call_api(input_prompt=input_prompt, temperature=temp)
         data = extract_json_data(completion["completion"]) or {}
-
+	if not data:                                                # <─ add
+            st.error(                                               # <─ these
+                f"Row {i}: LLM returned no parsable JSON:\n\n"
+                f"{completion['completion']}"
+            )    
         # guarantee all persona keys
         for p in persona_cols:
             data.setdefault(p, None)

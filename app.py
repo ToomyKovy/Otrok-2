@@ -139,7 +139,7 @@ def main():
         )
         temperature = st.slider("Temperature", 0.0, 1.0, 0.0, 0.05)
 
-      sys_prompt_file = st.file_uploader(
+        sys_prompt_file = st.file_uploader(
             "Custom system prompt (.txt)",
             type=["txt"],
         )

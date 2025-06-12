@@ -140,11 +140,11 @@ def main():
         temperature = st.slider("Temperature", 0.0, 1.0, 0.0, 0.05)
 
       sys_prompt_file = st.file_uploader("Custom system prompt (.txt)", type=["txt"])
-    system_prompt = (
-    sys_prompt_file.read().decode("utf-8")
-        if sys_prompt_file
-        else Path("system_prompt.txt").read_text(encoding="utf-8")
-    )
+       system_prompt = (
+       sys_prompt_file.read().decode("utf-8")
+           if sys_prompt_file
+           else Path("system_prompt.txt").read_text(encoding="utf-8")
+       )
     _set_env(openai_key, pplx_key)
 
     # ↑—— Main panel ————————————————————————————————————————

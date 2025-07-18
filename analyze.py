@@ -1,5 +1,6 @@
 from excel import col_types    # ← correct location of col_types
 import pandas as pd
+import numbers
 
 def compare_with_manual(df):
     same = 0
@@ -11,7 +12,11 @@ def compare_with_manual(df):
         original_segment = row["original_segment"]
 
         # score ≥ 4 in the SAME persona family
-        has_same = any([(row[x] if x in row and pd.notnull(row[x]) else 0) >= 4.0 for x in col_types.get(original_segment, [])])
+        has_same = any([
+            isinstance(row[x], numbers.Number) and row[x] >= 4.0
+            if x in row and pd.notnull(row[x]) else False
+            for x in col_types.get(original_segment, [])
+        ])
 
         has_other = False     # ≥ 4 in a DIFFERENT family
         has_any   = False     # ≥ 4 anywhere (for “unknown” segments)
@@ -21,7 +26,7 @@ def compare_with_manual(df):
             # mark if ANY persona hits ≥ 4
             for seg in col_list:
                 value = row[seg] if seg in row and pd.notnull(row[seg]) else 0
-                if value >= 4.0:
+                if isinstance(value, numbers.Number) and value >= 4.0:
                     has_any = True
 
             # skip self when checking “other” personas
@@ -30,7 +35,7 @@ def compare_with_manual(df):
 
             for seg in col_list:
                 value = row[seg] if seg in row and pd.notnull(row[seg]) else 0
-                if value >= 4.0:
+                if isinstance(value, numbers.Number) and value >= 4.0:
                     has_other = True
                     break
 

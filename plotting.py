@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numbers
+import numpy as np
 
 # ── GLOBAL STYLE KNOBS ────────────────────────────────────────────────────
 COL_SPACE     = 15      # vertical white gap (px) between column-groups
@@ -31,6 +33,8 @@ def plot_persona_heatmap(df, save_path, w=1., h=0.4, show=False):
     persona_cols = [c for grp in col_types.values() for c in sorted(grp)]
     dfv = df.copy()
     dfv["name"] = dfv["name"] + " (" + dfv["original_segment"] + ")"
+    for col in persona_cols:
+        dfv[col] = dfv[col].apply(lambda x: x if isinstance(x, numbers.Number) else np.nan)
     data = dfv.set_index('name')[persona_cols].astype(float)
 
     n_rows, n_cols = data.shape

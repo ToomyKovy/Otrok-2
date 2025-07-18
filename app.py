@@ -93,11 +93,9 @@ def _enrich_dataframe(df: pd.DataFrame, system_prompt: str, model: str, temp: fl
         for p in persona_cols:
             data.setdefault(p, None)
 
-        data.update({
-            "id": row.get("id") or row.get("Id") or row.get("ID"),
-            "name": row.get("name") or row.get("Name"),
-            "original_segment": row.get("original_segment") or row.get("Original segment") or row.get("Original Segment"),
-        })
+        data["id"] = row.get("id") or row.get("Id") or row.get("ID")
+        data["name"] = row.get("name") or row.get("Name")
+        data["original_segment"] = row.get("original_segment") or row.get("Original segment") or row.get("Original Segment")
         results.append(data)
         progress.progress(i / len(df), text=f"{i}/{len(df)} rows done")
 

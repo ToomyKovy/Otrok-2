@@ -5,6 +5,7 @@ from openpyxl import Workbook
 from openpyxl.comments import Comment
 from openpyxl.styles import Font, Alignment, PatternFill
 from openpyxl.utils import get_column_letter
+import numbers
 
 # ── DISCRETE PASTEL PALETTE ───────────────────────────────────────────────
 
@@ -133,7 +134,10 @@ def save_to_xlsx(df: pd.DataFrame,
         for gi, cols in enumerate(group_lists):
             for persona in cols:
                 score = row[persona]
-                key   = 'nan' if pd.isna(score) else int(score)
+                if pd.isna(score) or not isinstance(score, numbers.Number):
+                    key = 'nan'
+                else:
+                    key = int(score)
                 bg_hex, font_hex = COLORS[key], FONT_COLORS[key]
 
                 cell = ws.cell(row=r, column=c, value=None if key == 'nan' else key)

@@ -158,6 +158,9 @@ def main():
         return
 
     df_input = _read_csv_any_delim(uploaded)
+    # If 'New column' exists, rename it to 'id' so LinkedIn URLs are used as IDs
+    if 'New column' in df_input.columns:
+        df_input = df_input.rename(columns={'New column': 'id'})
     st.subheader("Preview of uploaded data (first 5 rows)")
     st.dataframe(df_input.head())
 

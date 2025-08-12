@@ -182,9 +182,6 @@ def main():
         rename_map['New Column'] = 'id'
     if rename_map:
         df_input = df_input.rename(columns=rename_map)
-        st.success(f"Renamed {list(rename_map.keys())} to 'id'")
-    else:
-        st.warning("No 'New column' / 'New Column' found. Please ensure your CSV has a LinkedIn URL column.")
     
     st.subheader("Preview of uploaded data (first 5 rows)")
     st.dataframe(df_input.head())

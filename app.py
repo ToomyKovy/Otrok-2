@@ -194,7 +194,7 @@ def main():
         png_path = tmp_dir / "heatmap.png"
 
         save_to_xlsx(df_scored, xlsx_path)
-        plot_persona_heatmap(df_scored, png_path)
+        plot_persona_heatmap(df_scored, png_path, w=0.8, h=0.3)
 
         # 3‣ Downloads --------------------------------------------------------------
         with open(xlsx_path, "rb") as f:

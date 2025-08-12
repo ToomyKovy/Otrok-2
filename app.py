@@ -106,9 +106,6 @@ def _enrich_dataframe(df: pd.DataFrame, system_prompt: str, model: str, temp: fl
         data["name"] = row.get("name") or row.get("Name")
         data["original_segment"] = row.get("original_segment") or row.get("Original segment") or row.get("Original Segment")
         
-        # Debug: Show what's in the id field for the first few rows
-        if i <= 3:
-            st.write(f"Row {i} id value: {data['id']}")
         results.append(data)
         progress.progress(i / len(df), text=f"{i}/{len(df)} rows done")
 

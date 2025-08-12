@@ -174,9 +174,6 @@ def main():
 
     df_input = _read_csv_any_delim(uploaded)
     
-    # Debug: Show all column names to help identify LinkedIn URL column
-    st.write("Available columns:", list(df_input.columns))
-    
     # Normalize LinkedIn URL column → 'id' (handle 'New column' and 'New Column')
     rename_map = {}
     if 'New column' in df_input.columns:

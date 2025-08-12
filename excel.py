@@ -64,12 +64,26 @@ def save_to_xlsx(df: pd.DataFrame,
     group_lists  = [sorted(cols) for cols in col_types.values()]
     persona_cols = [c for lst in group_lists for c in lst]
 
+    # Normalise LinkedIn URL column to 'id' (handle common variants)
+    alt_id_cols = ['id', 'Id', 'ID', 'New column', 'New Column']
+    df_work = df.copy()
+    if 'id' not in df_work.columns:
+        for alt in alt_id_cols:
+            if alt in df_work.columns:
+                df_work['id'] = df_work[alt]
+                break
+    # Fill missing ids from alternatives
+    if 'id' in df_work.columns:
+        for alt in alt_id_cols:
+            if alt in df_work.columns:
+                df_work['id'] = df_work['id'].combine_first(df_work[alt])
+
     required_cols = ['id'] + persona_cols
-    missing = [c for c in required_cols if c not in df.columns]
+    missing = [c for c in required_cols if c not in df_work.columns]
     if missing:
         raise ValueError(f"DataFrame is missing columns: {missing}")
 
-    dfv = df[required_cols].copy()
+    dfv = df_work[required_cols].copy()
 
     # 2‣ Workbook & header ---------------------------------------------------
     wb = Workbook()

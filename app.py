@@ -93,9 +93,22 @@ def _enrich_dataframe(df: pd.DataFrame, system_prompt: str, model: str, temp: fl
         for p in persona_cols:
             data.setdefault(p, None)
 
-        data["id"] = row.get("id") or row.get("Id") or row.get("ID")
+        data["id"] = (
+            row.get("id") or row.get("Id") or row.get("ID") or
+            row.get("New Column") or row.get("New column")
+        )
+        # Fallback: scan any field for a LinkedIn URL
+        if not data["id"]:
+            for key, value in row.items():
+                if isinstance(value, str) and "linkedin.com" in value:
+                    data["id"] = value
+                    break
         data["name"] = row.get("name") or row.get("Name")
         data["original_segment"] = row.get("original_segment") or row.get("Original segment") or row.get("Original Segment")
+        
+        # Debug: Show what's in the id field for the first few rows
+        if i <= 3:
+            st.write(f"Row {i} id value: {data['id']}")
         results.append(data)
         progress.progress(i / len(df), text=f"{i}/{len(df)} rows done")
 
@@ -156,9 +169,22 @@ def main():
         return
 
     df_input = _read_csv_any_delim(uploaded)
-    # If 'New column' exists, rename it to 'id' so LinkedIn URLs are used as IDs
+    
+    # Debug: Show all column names to help identify LinkedIn URL column
+    st.write("Available columns:", list(df_input.columns))
+    
+    # Normalize LinkedIn URL column → 'id' (handle 'New column' and 'New Column')
+    rename_map = {}
     if 'New column' in df_input.columns:
-        df_input = df_input.rename(columns={'New column': 'id'})
+        rename_map['New column'] = 'id'
+    if 'New Column' in df_input.columns:
+        rename_map['New Column'] = 'id'
+    if rename_map:
+        df_input = df_input.rename(columns=rename_map)
+        st.success(f"Renamed {list(rename_map.keys())} to 'id'")
+    else:
+        st.warning("No 'New column' / 'New Column' found. Please ensure your CSV has a LinkedIn URL column.")
+    
     st.subheader("Preview of uploaded data (first 5 rows)")
     st.dataframe(df_input.head())
 
@@ -190,7 +216,7 @@ def main():
 
         with open(png_path, "rb") as f:
             png_bytes = f.read()
-            st.image(png_bytes, caption="Heat‑map", use_column_width=True)
+            st.image(png_bytes, caption="Heat‑map", use_container_width=True)
             st.download_button(
                 "Download PNG heat‑map",
                 png_bytes,

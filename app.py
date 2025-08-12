@@ -188,11 +188,6 @@ def main():
             chosen_model = custom_model or model_name
             df_scored = _enrich_dataframe(df_input, system_prompt, chosen_model, temperature)
 
-        # 1‣ Ratios -----------------------------------------------------------------
-        ratios = compare_with_manual(df_scored)
-        st.subheader("Overlap with original segment")
-        st.write(ratios)
-
         # 2‣ Output artefacts --------------------------------------------------------
         tmp_dir = Path(tempfile.mkdtemp())
         xlsx_path = tmp_dir / "persona_scores.xlsx"

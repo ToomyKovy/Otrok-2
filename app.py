@@ -95,7 +95,7 @@ def _enrich_dataframe(df: pd.DataFrame, system_prompt: str, model: str, temp: fl
 
         data["id"] = (
             row.get("id") or row.get("Id") or row.get("ID") or
-            row.get("New Column") or row.get("New column")
+            row.get("Linkedin URL") or row.get("New Column") or row.get("New column")
         )
         # Fallback: scan any field for a LinkedIn URL
         if not data["id"]:
@@ -171,11 +171,13 @@ def main():
 
     df_input = _read_csv_any_delim(uploaded)
     
-    # Normalize LinkedIn URL column → 'id' (handle 'New column' and 'New Column')
+    # Normalize LinkedIn URL column → 'id' (handle various column names)
     rename_map = {}
-    if 'New column' in df_input.columns:
+    if 'Linkedin URL' in df_input.columns:
+        rename_map['Linkedin URL'] = 'id'
+    elif 'New column' in df_input.columns:
         rename_map['New column'] = 'id'
-    if 'New Column' in df_input.columns:
+    elif 'New Column' in df_input.columns:
         rename_map['New Column'] = 'id'
     if rename_map:
         df_input = df_input.rename(columns=rename_map)

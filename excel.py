@@ -27,7 +27,7 @@ COLORS = {
 
 # ── PERSONA GROUPS (unchanged) ────────────────────────────────────────────
 col_types = {
-    'Business': ['Business Decisions'],
+    'Business': ['Product Business', 'General Business'],
     'Data':     ['Data Quality', 'Open Banking (PSD2 Standard)', 'Scoring – Credit Risk',
                  'CRM Labelling', 'Solution Replacement (incl. Internal)'],
     'ESG':      ['ESG – Scope Reporting', 'ESG – CO2 Footprint'],
@@ -65,7 +65,7 @@ def save_to_xlsx(df: pd.DataFrame,
     persona_cols = [c for lst in group_lists for c in lst]
 
     # Normalise LinkedIn URL column to 'id' (handle common variants)
-    alt_id_cols = ['id', 'Id', 'ID', 'New column', 'New Column']
+    alt_id_cols = ['id', 'Id', 'ID', 'Linkedin URL', 'New column', 'New Column']
     df_work = df.copy()
     if 'id' not in df_work.columns:
         for alt in alt_id_cols:

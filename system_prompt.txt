@@ -258,47 +258,87 @@ You are a business developer and your task is to classify personas into several 
 
 
 
-## Business Decisions
+# Product Business
+
+## Typical Job Titles:
+
+- Chief Digital Officer (CDO)
+- Group Head of Retail Banking
+- Director of Customer Experience (CX)
+- Head of CRM & Personalization
+- Chief Data Officer (CDO)
+- Head of Data & Analytics
+- Head of Digital Banking
+- Head of Innovation
+- Chief Innovation Officer (CIO)
+
+## Typical Pain Points, Challenges This Persona Faces:
+
+- Inability to act on shifting customer behaviors (e.g. cashless trend, digital preferences) because the data is unclear
+- Fragmented or siloed data sources limiting visibility into actual customer needs
+- Poor categorization and insufficient detail in transaction data makes relevant targeting and personalization impossible
+- Customer complaints and low app ratings are driven by a confusing user experience with cryptic transaction details
+- Internal analysis and strategic reports are questioned due to poor data quality or incompleteness
+- Losing clients because digital services and products don't evolve fast enough to compete with modern fintechs
+
+## Typical KPIs of the Person Connected to This Solution/Persona:
+
+- Customer acquisition and retention rates
+- Customer satisfaction / NPS related to mobile app usage
+- Campaign response and conversion rates
+- App store ratings and qualitative feedback
+- Accuracy score or confidence levels of data sets used for analytics
+- Decrease in support queries related to unclear transactions
+
+## The Common Goals or Benefits They Want to Achieve:
+
+- Leverage customer behavior data to stay aligned with market shifts and customer needs
+- Use enriched transaction insights to spot trends and business opportunities
+- Improve customer satisfaction by offering relevant, timely, and clear digital services
+- Move from basic personalization to true hyperpersonalization in marketing and product offers
+- Build a reliable data foundation to enable the creation of new, innovative features and analytical projects
+- Make smarter, data-backed decisions to improve digital products and customer engagement
+
+
+
+# General Business
 
 ## Typical Job Titles:
 
 - Chief Executive Officer (CEO)
 - Chief Operating Officer (COO)
-- Chief Innovation Officer (CIO)
+- Chief Financial Officer (CFO)
 - Chief Strategy Officer (CSO)
-- Group Head of Retail Banking
+- Chief Sales Officer (CSO)
 - Executive Director – Digital Transformation
-- Head of Corporate Development
-- Chief Digital Officer (CDO)
+- Head of Operational Efficiency
 
 ## Typical Pain Points, Challenges This Persona Faces:
 
 - Pressure to make fast, high-stakes business decisions with incomplete or outdated data
-- Risk of making incorrect decisions due to internal bias or lack of real client insights
-- Inability to act on shifting customer behaviors (e.g. cashless trend, digital preferences)
-- Missed opportunities due to long decision cycles or analysis paralysis
-- Losing clients because services don’t evolve fast enough
-- Difficulty quantifying the ROI of innovation and new digital features
-- Fragmented or siloed data sources limiting visibility into customer needs
+- Difficulty quantifying the ROI of innovation and new digital features, making budget allocation a high-risk bet
+- High and unpredictable operational costs stemming from inefficient processes like handling transaction disputes and chargebacks
+- Risk of making incorrect multi-million-dollar decisions due to internal bias or a lack of real client insights
+- Missed opportunities and slow growth due to long decision cycles or "analysis paralysis"
+- Maintaining costly, complex, and inefficient internal systems that drain resources without delivering competitive value
 
 ## Typical KPIs of the Person Connected to This Solution/Persona:
 
-- Customer acquisition and retention rates
-- Market share growth in strategic segments
 - Profitability and revenue increase
-- Time-to-decision / speed of execution on new ideas
-- Strategic alignment and success of long-term initiatives
+- Market share growth in strategic segments
+- Return on Investment (ROI) of technology and strategic projects
+- Total Cost of Ownership (TCO) of infrastructure
 - Cost savings and efficiency improvements from better decisions
+- Time-to-decision / speed of execution on new ideas
 
 ## The Common Goals or Benefits They Want to Achieve:
 
-- Make smarter, faster, data-backed / data-driven strategic decisions
-- Avoid costly mistakes or indecision through accurate, real-time insights
-- Leverage customer behavior data to stay aligned with market shifts
-- Use enriched transaction insights to spot trends and business opportunities
-- Be in control and confidently steer the organization toward growth
-- Improve customer satisfaction by offering relevant, timely services
-- Stay ahead of the competition by acting proactively
+- Make smarter, faster, data-backed strategic decisions to steer the organization toward growth
+- Avoid costly mistakes or indecision through accurate, real-time insights into business performance
+- Achieve a clear ROI by reducing operational costs while enabling new revenue opportunities
+- Stay ahead of the competition by acting proactively and decisively on market trends
+- De-risk major investments in technology and digital transformation with verifiable data
+- Free up company resources from maintaining legacy systems to focus on core, growth-oriented projects
 
 
 
@@ -696,7 +736,8 @@ The user will give you scraped information about a single person based on social
 
 Return **only** one JSON object like:
 {
-  "Business Decisions": 3,
+  "Product Business": 3,
+  "General Business": 2,
   "Data Quality": 0,
   …
 }

@@ -82,14 +82,20 @@ def save_to_xlsx(df: pd.DataFrame,
     col_idx = 1
     # fixed “front” columns
     for col_name in ('id', 'name', 'original_segment'):
-        header_text = 'original\nsegment' if col_name == 'original_segment' else col_name
+        # Show LinkedIn URL instead of name in the second column
+        if col_name == 'original_segment':
+            header_text = 'original\nsegment'
+        elif col_name == 'name':
+            header_text = 'LinkedIn URL'
+        else:
+            header_text = col_name
         cell = ws.cell(row=1, column=col_idx, value=header_text)
         cell.font, cell.alignment = header_font, header_align
 
         # column widths
         letter = get_column_letter(col_idx)
         if col_name == 'name':
-            ws.column_dimensions[letter].width = 25
+            ws.column_dimensions[letter].width = 45
         elif col_name == 'id':
             ws.column_dimensions[letter].width = 15
         elif col_name == 'original_segment':
@@ -126,8 +132,17 @@ def save_to_xlsx(df: pd.DataFrame,
         if isinstance(id_val, str) and id_val.startswith(('http://', 'https://')):
             id_cell.hyperlink, id_cell.style = id_val, 'Hyperlink'
 
-        # name / original_segment
-        ws.cell(row=r, column=2, value=row['name'])
+        # name column now displays LinkedIn URL if available
+        if isinstance(id_val, str) and id_val.startswith(('http://', 'https://')):
+            display_val = id_val
+        else:
+            display_val = row['name']
+
+        name_cell = ws.cell(row=r, column=2, value=display_val)
+        if isinstance(display_val, str) and display_val.startswith(('http://', 'https://')):
+            name_cell.hyperlink, name_cell.style = display_val, 'Hyperlink'
+
+        # original_segment
         ws.cell(row=r, column=3, value=row['original_segment'])
 
         c = 4

@@ -207,7 +207,6 @@ def main():
 
         with open(png_path, "rb") as f:
             png_bytes = f.read()
-            st.image(png_bytes, caption="Heat‑map", use_container_width=True)
             st.download_button(
                 "Download PNG heat‑map",
                 png_bytes,

@@ -212,8 +212,18 @@ class LLM:
         self.log = partial(log, log_level=log_level, id_=log_id)
         self.call_rate_limiter = call_rate_limiter
 
-        self._llm_provider = LLM_MODELS.get(model, {}).get('llm_provider', '$' + model)
-        if self._llm_provider[0] == '$':
+        # Decide provider: known mapping → provider; URL-like → custom base URL; otherwise default to OpenAI
+        mapped_provider = LLM_MODELS.get(model, {}).get('llm_provider')
+        if mapped_provider:
+            self._llm_provider = mapped_provider
+        else:
+            if isinstance(model, str) and model.startswith(("http://", "https://")):
+                self._llm_provider = "$" + model
+            else:
+                # Unknown model name but not a URL → assume OpenAI
+                self._llm_provider = "openai"
+
+        if self._llm_provider.startswith('$'):
             self.client = OpenAI(api_key="lm-studio", base_url=self._llm_provider[1:])  # for llama.cpp api key can be any non-empty string
         else:
             self.client = OpenAI(**LLM_API_CONFIG[self._llm_provider])

@@ -146,8 +146,12 @@ def main():
                 "gpt-4.1-2025-04-14",
                 "sonar",
                 "sonar-reasoning",
+                "custom…",
             ],
         )
+        custom_model = None
+        if model_name == "custom…":
+            custom_model = st.text_input("Custom model name (e.g., gpt-5)")
         temperature = st.slider("Temperature", 0.0, 1.0, 0.0, 0.05)
 
         sys_prompt_file = st.file_uploader(
@@ -190,7 +194,8 @@ def main():
 
     if st.button("Run OTROK"):
         with st.spinner("Scoring personas … this may take a while!"):
-            df_scored = _enrich_dataframe(df_input, system_prompt, model_name, temperature)
+            chosen_model = custom_model or model_name
+            df_scored = _enrich_dataframe(df_input, system_prompt, chosen_model, temperature)
 
         # 1‣ Ratios -----------------------------------------------------------------
         ratios = compare_with_manual(df_scored)

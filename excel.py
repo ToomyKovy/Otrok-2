@@ -132,12 +132,8 @@ def save_to_xlsx(df: pd.DataFrame,
         if isinstance(id_val, str) and id_val.startswith(('http://', 'https://')):
             id_cell.hyperlink, id_cell.style = id_val, 'Hyperlink'
 
-        # name column now displays LinkedIn URL if available
-        if isinstance(id_val, str) and id_val.startswith(('http://', 'https://')):
-            display_val = id_val
-        else:
-            display_val = row['name']
-
+        # name column now displays LinkedIn URL (id value)
+        display_val = id_val
         name_cell = ws.cell(row=r, column=2, value=display_val)
         if isinstance(display_val, str) and display_val.startswith(('http://', 'https://')):
             name_cell.hyperlink, name_cell.style = display_val, 'Hyperlink'

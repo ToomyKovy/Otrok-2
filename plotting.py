@@ -10,7 +10,7 @@ HEADER_OFFSET = -0.4    # vertical offset of group title (data-coords);
                         #   −0.4 ≈ just above the top row.  Make more negative = higher.
 
 col_types = {
-    'Business': ['Business Decisions'],
+    'Business': ['Product Business', 'General Business'],
     'Data': ['Data Quality', 'Open Banking (PSD2 Standard)', 'Scoring – Credit Risk', 'CRM Labelling', 'Solution Replacement (incl. Internal)'],
     'ESG': ['ESG – Scope Reporting', 'ESG – CO2 Footprint'],
     'UX': ['Transaction history', 'Mastercard Mandate', 'PFM', 'Subscription', 'ATM / Withdrawal', 'AI Chatbot'],
